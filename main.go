@@ -2,8 +2,14 @@ package main
 
 import (
 	"fmt"
+	"urubu-do-pix/achievements"
+	"urubu-do-pix/cashback"
+	"urubu-do-pix/charity"
+	"urubu-do-pix/loan"
 	"urubu-do-pix/lottery"
+	"urubu-do-pix/ranking"
 	"urubu-do-pix/transaction"
+	"urubu-do-pix/troll"
 	"urubu-do-pix/user"
 )
 
@@ -71,7 +77,14 @@ func userMenu(loggedInUser *user.User) {
 		fmt.Println("3. Ver Histórico de Transações")
 		fmt.Println("4. Transferir Dinheiro")
 		fmt.Println("5. Participar da Loteria")
-		fmt.Println("6. Logout")
+		fmt.Println("6. Receber Cashback Aleatório")
+		fmt.Println("7. Ver Ranking de Usuários")
+		fmt.Println("8. Ver Conquistas")
+		fmt.Println("9. Modo Troll - Transferências Surpresa")
+		fmt.Println("10. Solicitar Empréstimo")
+		fmt.Println("11. Pagar Empréstimo")
+		fmt.Println("12. Doar para Caridade")
+		fmt.Println("13. Logout")
 		fmt.Print("Escolha uma opção: ")
 		var choice int
 		fmt.Scanln(&choice)
@@ -94,6 +107,29 @@ func userMenu(loggedInUser *user.User) {
 		case 5:
 			participateInLottery(loggedInUser)
 		case 6:
+			cashback.ApplyRandomCashback(loggedInUser)
+		case 7:
+			ranking.GetTopUsers(user.GetAllUsersMap())
+		case 8:
+			achievements.CheckAndUnlockAchievements(loggedInUser)
+		case 9:
+			troll.SurpriseTransfer(loggedInUser, user.GetAllUsers())
+		case 10:
+			var loanAmount float64
+			fmt.Print("Digite o valor do empréstimo: R$ ")
+			fmt.Scanln(&loanAmount)
+			loan.RequestLoan(loggedInUser, loanAmount)
+		case 11:
+			var repayAmount float64
+			fmt.Print("Digite o valor a ser pago: R$ ")
+			fmt.Scanln(&repayAmount)
+			loan.RepayLoan(loggedInUser, repayAmount)
+		case 12:
+			var donationAmount float64
+			fmt.Print("Digite o valor da doação: R$ ")
+			fmt.Scanln(&donationAmount)
+			charity.DonateToCharity(loggedInUser, donationAmount)
+		case 13:
 			fmt.Println("Deslogando...")
 			user.UpdateUser(loggedInUser)
 			return
@@ -102,7 +138,6 @@ func userMenu(loggedInUser *user.User) {
 		}
 	}
 }
-
 func deposit(loggedInUser *user.User, amount float64) *user.User {
 	loggedInUser.UpdateBalance(amount, fmt.Sprintf("Depósito de R$ %.2f", amount))
 	fmt.Printf("Parabéns, você depositou R$ %.2f!\n", amount)
