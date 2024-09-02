@@ -29,12 +29,12 @@ Clone o Repositório
 
 bash
 Copiar código
-git clone https://github.com/SeuUsuario/UrubuDoPix.git
+git clone https://github.com/SamuelBarbosa1/urubu-do-pix
 Navegue para o Diretório do Projeto
 
 bash
 Copiar código
-cd UrubuDoPix
+cd urubu-do-pix
 Compile o Projeto
 
 bash
